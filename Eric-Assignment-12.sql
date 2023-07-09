@@ -37,7 +37,7 @@ CREATE TABLE `pizza_restaurant`.`orders` (
 select * from customers;
   
 insert into customers (customer_id, `name`, phone_number)
-values ('Trevor Page', '226-555-4982');
+values (1, 'Trevor Page', '226-555-4982');
   
 insert into customers (customer_id, `name`, phone_number)
 values (2, 'John Doe', '555-555-9498');
@@ -120,12 +120,12 @@ ORDER BY total_spent DESC;
 
 
 -- Answer Q5 - Modify the query from Q4 to separate the orders not just by customer, but also by date so they can see how much each customer is ordering on which date.
-SELECT customers.customer_id, customers.name, orders.order_date,
+SELECT customers.customer_id, customers.name, DATE(orders.order_date) AS order_date,
     SUM(pizzas.price * pizza_orders.quantity) AS total_spent
 FROM customers
 JOIN customer_orders ON customers.customer_id = customer_orders.customer_id
 JOIN orders ON customer_orders.order_id = orders.order_id
 JOIN pizza_orders ON orders.order_id = pizza_orders.order_id
 JOIN pizzas ON pizza_orders.pizza_id = pizzas.pizza_id
-GROUP BY customers.customer_id, customers.name, orders.order_date
-ORDER BY orders.order_date ASC, total_spent DESC;
+GROUP BY customers.customer_id, customers.name, DATE(orders.order_date)
+ORDER BY order_date ASC, total_spent DESC;
